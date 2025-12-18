@@ -155,6 +155,27 @@ function formatTimestamp(timestamp) {
     });
 }
 
+function dayago(timestamp){
+    const now = Date.now();
+    const old = now - timestamp;
+
+    const oldmin = Math.floor(old / (1000*60));
+    const oldhour = Math.floor(old / (1000*60*60));
+    const oldday = Math.floor(old / (1000*60*60*24));
+
+    if (oldmin < 1) {
+        return 'たった今';
+    }
+    if (oldmin < 60) {
+        return `${oldmin}分前`;
+    }
+    if (oldhour < 24) {
+        return `${oldhour}時間前`;
+    }
+    return `${oldday}日前`;
+
+}
+
 // 投稿の編集権限チェック
 function canEditPost(post) {
     return currentUser && post.userId === currentUser.uid;
@@ -200,6 +221,14 @@ function createPostElement(post) {
                 <span class="post-time">
                     ${formatTimestamp(post.timestamp)}
                 </span>
+                <span class="post-ago">
+                    ${dayago(post.timestamp)}
+                </span>
+                
+
+                
+                
+
                 ${post.updatedAt ? `
                     <span class="post-updated">
                         (編集済み: ${formatTimestamp(post.updatedAt)})
