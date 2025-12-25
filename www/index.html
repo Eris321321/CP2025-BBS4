@@ -55,6 +55,10 @@ function updateCharacterCount(inputId, counterId, maxLength) {
     const input = $(`#${inputId}`);
     const counter = $(`#${counterId}`);
 
+    const length = input.val().length;
+    const nokori = maxLength - length;
+    counter.text(`残り${nokori}字`);
+
     input.on('input', () => {
         const length = input.val().length;
         const nokori = maxLength-length;
@@ -543,11 +547,32 @@ window.addEventListener('unload', () => {
         postsListener = null;
     }
 });
+    let changed = false;
+    $(function(){
+        $("#btn1").click(function(e){
+            main();
+        });
+    });
+
+    function main(){
+         if (!changed) {
+            $("body").css("background-color", "lightgrey");
+        } else {
+            $("body").css("background-color", "white");
+        }
+        changed = !changed;
+    }
+
+
     </script>
 </head>
+
 <body>
     <div class="container">
         <h1>掲示板アプリ</h1>
+        <button id="btn1" class="btn-secondary">
+            背景色切り替え
+        </button>
 
         <!-- メッセージ表示エリア -->
         <div id="messageArea"></div>
@@ -583,7 +608,7 @@ window.addEventListener('unload', () => {
                 <label for="contentInput">投稿内容</label>
                 <textarea id="contentInput" class="form-control"
                           placeholder="投稿内容を入力してください"></textarea>
-                <small class="character-count" id="contentCount">0/1000</small>
+                <small class="character-count" id="contentCount"></small>
             </div>
             <div class="button-group">
                 <button id="postButton" class="btn-primary">投稿する</button>
